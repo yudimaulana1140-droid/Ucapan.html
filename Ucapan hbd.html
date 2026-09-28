@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday My Love</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #0d0d0d;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    /* Background Heart Animation */
+    .bg-heart {
+      position: absolute;
+      color: rgba(255, 105, 180, 0.3);
+      animation: floatUp 4s linear infinite;
+      font-size: 20px;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(100vh) scale(0.5); opacity: 1; }
+      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    }
+
+    .container {
+      text-align: center;
+      width: 100%;
+      max-width: 500px;
+      padding: 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Screen 1: Gift Box */
+    .gift-box {
+      cursor: pointer;
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+
+    .gift-box:hover {
+      transform: scale(1.1);
+    }
+
+    .gift-icon {
+      font-size: 80px;
+      animation: bounce 1.5s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    /* Screen 2: Slider Carousel 3D */
+    .slider-screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .title {
+      font-size: 1.8rem;
+      color: #ff69b4;
+      margin-bottom: 25px;
+      text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+    }
+
+    .carousel-container {
+      width: 100%;
+      height: 280px;
+      perspective: 1000px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card {
+      position: absolute;
+      width: 180px;
+      height: 240px;
+      border-radius: 15px;
+      background: #1a1a1a;
+      border: 2px solid #ff69b4;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+      transition: all 0.5s ease-in-out;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .card img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 0.85rem;
+      color: #fff;
+    }
+
+    .card.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    /* Navigation Controls */
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .btn-nav {
+      background: #ff69b4;
+      border: none;
+      color: white;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1.1rem;
+      box-shadow: 0 0 10px rgba(255, 105, 180, 0.4);
+    }
+
+    .btn-nav:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .counter {
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div id="giftScreen">
+      <div class="gift-box" onclick="openGift()">
+        <div class="gift-icon">🎁</div>
+        <p style="margin-top: 15px; color: #ff69b4; font-size: 1.2rem;">Happy Birthday My love</p>
+      </div>
+    </div>
+
+    <div id="sliderScreen" class="slider-screen">
+      <h2 class="title">Happy Birthday My love</h2>
+      
+      <div class="carousel-container" id="carousel">
+        </div>
+
+      <div class="controls">
+        <button class="btn-nav" id="prevBtn" onclick="prevCard()">&lt;</button>
+        <span class="counter" id="counter">1 / 5</span>
+        <button class="btn-nav" id="nextBtn" onclick="nextCard()">&gt;</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Data Kartu (Bisa ganti foto dan ucapan di sini)
+    const cardsData = [
+      { img: 'yudi.jpg', text: 'Cuánto más tiempo estoy contigo, más te amo' },
+      { img: 'https://picsum.photos/200/200?random=2', text: 'Eres mi alegría, mi amor y mi todo' },
+      { img: 'https://picsum.photos/200/200?random=3', text: 'Gracias por ser la luz de mi vida' },
+      { img: 'https://picsum.photos/200/200?random=4', text: 'Gracias por hacer mi vida tan especial' },
+      { img: 'https://picsum.photos/200/200?random=5', text: 'Te amo con todo mi corazón' }
+    ];
+
+    let currentIndex = 0;
+
+    // Fungsi membuka kado
+    function openGift() {
+      document.getElementById('giftScreen').style.display = 'none';
+      document.getElementById('sliderScreen').style.display = 'flex';
+      renderCarousel();
+    }
+
+    // Fungsi render carousel 3D
+    function renderCarousel() {
+      const carousel = document.getElementById('carousel');
+      carousel.innerHTML = '';
+
+      cardsData.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        
+        let offset = index - currentIndex;
+        let transform = '';
+        let opacity = 0;
+        let zIndex = 0;
+
+        if (offset === 0) {
+          transform = 'translateX(0) scale(1)';
+          opacity = 1;
+          zIndex = 5;
+        } else if (offset === -1) {
+          transform = 'translateX(-120px) scale(0.8) rotateY(25deg)';
+          opacity = 0.6;
+          zIndex = 4;
+        } else if (offset === 1) {
+          transform = 'translateX(120px) scale(0.8) rotateY(-25deg)';
+          opacity = 0.6;
+          zIndex = 4;
+        } else {
+          transform = `translateX(${offset * 150}px) scale(0.6)`;
+          opacity = 0;
+          zIndex = 1;
+        }
+
+        card.style.transform = transform;
+        card.style.opacity = opacity;
+        card.style.zIndex = zIndex;
+
+        card.innerHTML = `
+          <img src="${item.img}" alt="Photo">
+          <p>${item.text}</p>
+        `;
+
+        carousel.appendChild(card);
+      });
+
+      document.getElementById('counter').innerText = `${currentIndex + 1} / ${cardsData.length}`;
+      document.getElementById('prevBtn').disabled = currentIndex === 0;
+      document.getElementById('nextBtn').disabled = currentIndex === cardsData.length - 1;
+    }
+
+    function nextCard() {
+      if (currentIndex < cardsData.length - 1) {
+        currentIndex++;
+        renderCarousel();
+      }
+    }
+
+    function prevCard() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        renderCarousel();
+      }
+    }
+
+    // Efek love melayang di background
+    setInterval(() => {
+      const heart = document.createElement('div');
+      heart.className = 'bg-heart';
+      heart.innerHTML = '♥';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 5000);
+    }, 300);
+  </script>
+</body>
+</html>
