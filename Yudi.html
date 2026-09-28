@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Selamat! Lulus Belajar Coding 🚀</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg-2: #0e1530;
+      --primary: #66e3ff;
+      --accent: #47ffa5;
+      --pink: #ff73d2;
+      --glow: rgba(102, 227, 255, 0.35);
+      --card: #111a33;
+      --muted: #a7b5d6;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', system-ui, sans-serif;
+      color: var(--text);
+      background-color: var(--bg);
+      overflow: hidden;
+    }
+
+    body {
+      background: radial-gradient(1200px 800px at 80% -20%, #1a2345 0%, transparent 60%),
+                  radial-gradient(1000px 800px at -10% 110%, #1d1b40 0%, transparent 60%),
+                  linear-gradient(180deg, var(--bg), var(--bg-2));
+    }
+
+    .grid {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.16;
+      mix-blend-mode: screen;
+      background: linear-gradient(var(--grid) 1px, transparent 1px),
+                  linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 40px 40px, 40px 40px;
+      animation: pan 30s linear infinite;
+    }
+
+    @keyframes pan {
+      to { background-position: 1000px 0, 0 1000px; }
+    }
+
+    .circuit {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.18;
+      filter: drop-shadow(0 0 8px #66e3ff);
+    }
+
+    #matrix {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.25;
+    }
+
+    .wrap {
+      position: relative;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    .card {
+      width: min(940px, 92vw);
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(17, 26, 51, 0.85), rgba(13, 20, 38, 0.95));
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow), 0 0 20px rgba(102, 227, 255, 0.15);
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(102, 227, 255, 0.2);
+    }
+
+    .badge {
+      font: 600 12px/1 'Fira Code', monospace;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #021014;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      padding: 8px 16px;
+      border-radius: 999px;
+      box-shadow: 0 0 20px var(--glow);
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    .title {
+      margin: 0;
+      padding: 0;
+      font-size: clamp(24px, 5vw, 48px);
+      font-weight: 800;
+      color: #fff;
+      text-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+    }
+
+    .title span {
+      color: var(--primary);
+    }
+
+    .subtitle {
+      margin: 12px 0 24px 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .code {
+      margin: 24px 0;
+      background: #0a1328;
+      border-radius: 12px;
+      padding: 18px 20px;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+      font-family: 'Fira Code', monospace;
+      font-size: 14px;
+      color: #cbe7ff;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(102, 227, 255, 0.15);
+    }
+
+    .code pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .dots {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .btns {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    button {
+      appearance: none;
+      border: none;
+      border-radius: 14px;
+      padding: 12px 20px;
+      font: 600 14px 'Poppins', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: #0f1c3d;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102,227,255,0.2);
+      border-color: var(--primary);
+    }
+
+    button.primary {
+      background: linear-gradient(90deg, #66e3ff, #47ffa5);
+      color: #0b1020;
+      font-weight: 700;
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: var(--muted);
+      opacity: 0.8;
+    }
+
+    @media (max-width: 600px) {
+      .card { padding: 20px; }
+      .btns { flex-direction: column; }
+      button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="matrix"></canvas>
+  <div class="grid"></div>
+
+  <svg class="circuit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#66e3ff" stop-opacity="0.6"/>
+        <stop offset="100%" stop-color="#47ffa5" stop-opacity="0.1"/>
+      </linearGradient>
+    </defs>
+    <g stroke="url(#g1)" stroke-width="1.2" fill="none">
+      <path d="M100 100 h200 v100 h150 v-50 h200" />
+      <path d="M200 700 v-140 h90 v120 h170" />
+      <path d="M1000 120 v160 h-120 v220 h-160 v90" />
+      <circle cx="100" cy="100" r="3" fill="#66e3ff" />
+      <circle cx="450" cy="200" r="3" fill="#66e3ff" />
+      <circle cx="520" cy="290" r="3" fill="#47ffa5" />
+    </g>
+  </svg>
+
+  <div class="wrap">
+    <div class="card">
+      <header>
+        <span class="badge">Achievement Unlocked • Coder</span>
+        <h1 class="title">Selamat, <span id="nama">Teman Hebat</span>! 🎉</h1>
+        <p class="subtitle">
+          Kamu resmi menaklukkan dasar-dasar <strong>coding</strong>. Dari error pertama sampai program pertama yang berhasil jalan—semua terbayar!
+        </p>
+      </header>
+
+      <div class="code">
+        <pre><code id="snippet"></code></pre>
+      </div>
+
+      <div class="btns">
+        <button class="primary" id="btnConfetti">Lempar congratulation 🎉</button>
+        <button id="btnGantiNama">Ganti Nama Teman ✏️</button>
+        <button id="btnSalin">Salin Ucapan 📋</button>
+      </div>
+
+      <div class="footer">
+        💡 <strong>Tip:</strong> kamu bisa edit teks ucapan di kode, atau klik "Ganti Nama Teman". Latar IT: grid neon + circuit + efek "matrix rain".
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let dimas = "Teman Hebat";
+
+    // Isi Teks Ucapan / Pesan
+    const textToType = `// Selamat datang di dunia coding!
+const friend = "${dimas}";
+
+console.log(\`Hai, \${friend}!\`);
+
+/* Pesan untukmu:
+ - Terus penasaran & jangan takut error
+ - Baca dokumentasi, coba-coba, ulangi
+ - Kode yang bagus lahir dari kebiasaan kecil
+*/
+
+function nextJourney() {
+  return ["HTML", "CSS", "JavaScript", "Git", "Framework", "Projek seru!"];
+}
+
+// Proud of you. Keep building! 🚀`;
+
+    const codeEl = document.getElementById('snippet');
+    let i = 0;
+
+    // Efek Mengetik Teks Kode
+    function type() {
+      if (i < textToType.length) {
+        codeEl.textContent += textToType.charAt(i);
+        i++;
+        setTimeout(type, 15);
+      }
+    }
+    type();
+
+    // Tombol Lempar Konfeti
+    document.getElementById('btnConfetti').addEventListener('click', throwConfetti);
+
+    function throwConfetti() {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }
+    }
+
+    // Tombol Ganti Nama
+    document.getElementById('btnGantiNama').addEventListener('click', () => {
+      const baru = prompt('Masukkan nama temanmu:', dimas);
+      if (baru) {
+        dimas = baru;
+        document.getElementById('nama').textContent = dimas;
+        
+        // Reset animasi ketik
+        codeEl.textContent = '';
+        i = 0;
+        type();
+      }
+    });
+
+    // Tombol Salin Ucapan
+    document.getElementById('btnSalin').addEventListener('click', async () => {
+      const teks = `Selamat, ${dimas}! Kamu berhasil belajar coding. Jangan berhenti berkarya!🚀`;
+      await navigator.clipboard.writeText(teks);
+      alert('Ucapan berhasil disalin!');
+    });
+
+    // Efek Matrix Rain Background
+    const cvs = document.getElementById('matrix');
+    const ctx = cvs.getContext('2d');
+
+    function resize() {
+      cvs.width = window.innerWidth;
+      cvs.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    const fontSize = 16;
+    const drops = Array(Math.floor(cvs.width / fontSize)).fill(1);
+    const chars = '01ABCDEFGHJKLMNPQRSTUVWXYZ<>[]{}*+=~#$_';
+
+    function draw() {
+      ctx.fillStyle = 'rgba(11, 16, 32, 0.08)';
+      ctx.fillRect(0, 0, cvs.width, cvs.height);
+
+      ctx.fillStyle = '#47ffa5';
+      ctx.font = fontSize + 'px "Fira Code", monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > cvs.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    // Trigger konfeti otomatis saat pertama dimuat
+    setTimeout(throwConfetti, 800);
+  </script>
+</body>
+</html>
