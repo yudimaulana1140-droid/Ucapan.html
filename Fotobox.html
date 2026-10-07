@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Photobook - Yudi Setiawan</title>
+  <style>
+    /* RESET & BODY STYLES */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #2c2c2c;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+    }
+
+    /* CONTANER BUKU */
+    .book {
+      position: relative;
+      width: 320px;
+      height: 400px;
+      transition: transform 0.5s;
+      perspective: 1500px;
+    }
+
+    /* SEMBUNYIKAN CHECKBOX */
+    input[type="checkbox"] {
+      display: none;
+    }
+
+    /* HALAMAN BUKU */
+    .page {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      transform-origin: left;
+      transform-style: preserve-3d;
+      transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+      cursor: pointer;
+    }
+
+    /* BAGIAN DEPAN & BELAKANG HALAMAN */
+    .front, .back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      text-align: center;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    /* ROTASI SISI BELAKANG */
+    .back {
+      transform: rotateY(180deg);
+      background-color: #f0f0f0;
+      color: #333;
+    }
+
+    /* TAMPILAN GAMBAR DI HALAMAN BELAKANG */
+    .back img {
+      width: 85%;
+      height: 80%;
+      object-fit: cover;
+      border: 6px solid #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    /* TEKS DI SISI DEPAN */
+    .front label, .front p, .front h2 {
+      cursor: pointer;
+    }
+
+    /* OVERLAY LABEL KANVAS AGAR SELURUH HALAMAN BISA DIKLIK */
+    .page label {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 10;
+      cursor: pointer;
+    }
+
+    /* COVER DEPAN (HALAMAN PERTAMA) */
+    #one .front {
+      background-color: #1a1a1a;
+      color: #ffffff;
+      border-radius: 0 8px 8px 0;
+    }
+
+    #one .front h2 {
+      font-size: 24px;
+      letter-spacing: 5px;
+      font-weight: 300;
+      border-bottom: 2px solid #fff;
+      padding-bottom: 10px;
+    }
+
+    /* HALAMAN 2 */
+    #two .front {
+      background-color: #111;
+      color: #fff;
+    }
+
+    #two .back {
+      background-color: #87ceeb; /* Biru muda */
+    }
+
+    /* HALAMAN 3 */
+    #three .front {
+      background-color: #222;
+      color: #fff;
+    }
+
+    #three .back {
+      background-color: #f5f5dc; /* Krem */
+    }
+
+    /* HALAMAN 4 */
+    #four .front {
+      background-color: #1a1a1a;
+      color: #fff;
+    }
+
+    #four .back {
+      background-color: #ffb6c1; /* Pink muda */
+    }
+
+    /* ANIMASI DIBALIK SAAT CHECKBOX DICENTANG */
+    #checkbox-one:checked ~ .book #one {
+      transform: rotateY(-180deg);
+      z-index: 1;
+    }
+
+    #checkbox-two:checked ~ .book #two {
+      transform: rotateY(-180deg);
+      z-index: 2;
+    }
+
+    #checkbox-three:checked ~ .book #three {
+      transform: rotateY(-180deg);
+      z-index: 3;
+    }
+
+    #checkbox-four:checked ~ .book #four {
+      transform: rotateY(-180deg);
+      z-index: 4;
+    }
+
+    /* Z-INDEX AWAL KETIKA BUKU MASIH TERTUTUP */
+    #one { z-index: 4; }
+    #two { z-index: 3; }
+    #three { z-index: 2; }
+    #four { z-index: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- CHECKBOX UNTUK KONTROL DIBALIK KANAN/KIRI (NO JAVASCRIPT) -->
+  <input type="checkbox" id="checkbox-one">
+  <input type="checkbox" id="checkbox-two">
+  <input type="checkbox" id="checkbox-three">
+  <input type="checkbox" id="checkbox-four">
+
+  <div class="book">
+
+    <!-- HALAMAN 1 (COVER) -->
+    <div class="page" id="one">
+      <div class="front">
+        <h2>Yudi Setiawan</h2>
+        <label for="checkbox-one"></label>
+      </div>
+      <div class="back">
+        <p>Katakan Cinta</p>
+        <label for="checkbox-one"></label>
+      </div>
+    </div>
+    
+
+    <!-- HALAMAN 2 -->
+    <div class="page" id="two">
+      <div class="front">
+        <p>Hati ini meminta</p>
+        <label for="checkbox-two"></label>
+      </div>
+      <div class="back">
+        <img src="yudi.jpg" alt="Foto 1">
+        <label for="checkbox-two"></label>
+      </div>
+    </div>
+
+    <!-- HALAMAN 3 -->
+    <div class="page" id="three">
+      <div class="front">
+        <p>Kau lebih dari teman berbagi</p>
+        <label for="checkbox-three"></label>
+      </div>
+      <div class="back">
+        <img src="yudi2.jpg" alt="Foto 2">
+        <label for="checkbox-three"></label>
+      </div>
+    </div>
+
+    <!-- HALAMAN 4 -->
+    <div class="page" id="four">
+      <div class="front">
+        <p>Jadi kekasihku saja</p>
+        <label for="checkbox-four"></label>
+      </div>
+      <div class="back">
+        <img src="yudi3.jpg" alt="Foto 3">
+        <label for="checkbox-four"></label>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
