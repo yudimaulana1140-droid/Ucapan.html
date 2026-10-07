@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>yudisetiawan-dev | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#e50914',
+                            darkRed: '#800000',
+                            glowRed: '#ff2a2a',
+                            bgDark: '#0b0203',
+                            cardBg: '#160708',
+                            borderRed: '#2e0e11'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0b0203;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Glowing Backgrounds */
+        .ambient-glow {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(160, 10, 10, 0.25) 0%, rgba(11, 2, 3, 0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .avatar-glow {
+            box-shadow: 0 0 45px 12px rgba(255, 215, 0, 0.65), inset 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .red-btn-glow {
+            box-shadow: 0 0 20px rgba(229, 9, 20, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .red-btn-glow:hover {
+            box-shadow: 0 0 35px rgba(255, 42, 42, 0.8);
+            transform: translateY(-2px);
+        }
+
+        /* Orbit System Setup */
+        .orbit-container {
+            position: relative;
+            width: 380px;
+            height: 380px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .orbit-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 1px stroke rgba(255, 255, 255, 0.05);
+            animation: spin 35s linear infinite;
+        }
+
+        .orbit-ring-reverse {
+            animation: spin-reverse 28s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes spin-reverse {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+
+        .tech-bubble {
+            position: absolute;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: #1c080a;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .tech-bubble:hover {
+            scale: 1.25;
+            border-color: #ff2a2a;
+            box-shadow: 0 0 15px rgba(255, 42, 42, 0.6);
+        }
+
+        /* Typing Cursor Blink */
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            background-color: #e50914;
+            margin-left: 4px;
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Glassmorphism Card Style */
+        .glass-card {
+            background: rgba(22, 7, 8, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(229, 9, 20, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(229, 9, 20, 0.4);
+            transform: translateY(-4px);
+        }
+    </style>
+</head>
+<body class="relative min-h-screen selection:bg-brand-red selection:text-white">
+
+    <!-- Ambient Glowing Radial Background -->
+    <div class="ambient-glow"></div>
+
+    <header class="fixed top-0 left-0 right-0 z-50 bg-black/60 backdrop-blur-md border-b border-white/5 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <!-- Brand Logo -->
+            <a href="#home" class="flex items-center gap-1 text-xl font-bold tracking-tight hover:opacity-90 transition">
+                <span class="text-white">Yudi setiawan</span><span class="text-brand-red">-dev</span>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
+                <a href="#home" class="hover:text-brand-red transition">Home</a>
+                <a href="#about" class="hover:text-brand-red transition">About</a>
+                <a href="#projects" class="hover:text-brand-red transition">Projects</a>
+                <a href="#contact" class="hover:text-brand-red transition">Contact</a>
+            </nav>
+
+            <!-- Social Links Header -->
+            <div class="hidden sm:flex items-center gap-4 text-gray-400 text-lg">
+                <a href="https://github.com" target="_blank" rel="noopener" class="hover:text-white transition"><i class="fa-brands fa-github"></i></a>
+                <a href="https://tiktok.com" target="_blank" rel="noopener" class="hover:text-white transition"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener" class="hover:text-white transition"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
+
+            <!-- Mobile Menu Toggle Button -->
+            <button id="mobileMenuBtn" class="md:hidden text-gray-300 hover:text-white focus:outline-none text-xl">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Menu Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden flex-col gap-4 mt-4 pt-4 border-t border-white/10 text-center text-gray-300">
+            <a href="#home" class="mobile-link hover:text-brand-red py-1">Home</a>
+            <a href="#about" class="mobile-link hover:text-brand-red py-1">About</a>
+            <a href="#projects" class="mobile-link hover:text-brand-red py-1">Projects</a>
+            <a href="#contact" class="mobile-link hover:text-brand-red py-1">Contact</a>
+            <div class="flex justify-center gap-6 pt-2 text-xl text-gray-400">
+                <a href="https://github.com" target="_blank" class="hover:text-white"><i class="fa-brands fa-github"></i></a>
+                <a href="https://tiktok.com" target="_blank" class="hover:text-white"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="https://linkedin.com" target="_blank" class="hover:text-white"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="relative z-10 max-w-7xl mx-auto px-6 pt-24">
+
+        <section id="home" class="min-h-[calc(100vh-6rem)] flex flex-col md:flex-row items-center justify-between gap-12 py-12">
+            
+            <!-- Left Hero Text Content -->
+            <div class="flex-1 space-y-6 text-center md:text-left">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-300">
+                    <span>Hello, I'm Yudi setiawan</span> <span>👋</span>
+                </div>
+
+                <!-- Dynamic Dynamic Typewriter Heading -->
+                <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight h-20 sm:h-24 flex items-center justify-center md:justify-start">
+                    <span id="typewriterText" class="text-white"></span>
+                    <span class="cursor">&nbsp;</span>
+                </h1>
+
+                <p class="text-gray-400 text-base sm:text-lg max-w-md mx-auto md:mx-0">
+                    Creating stunning and functional web experiences
+                </p>
+
+                <!-- CV Download Button -->
+                <div>
+                    <a href="#contact" class="inline-block px-8 py-3.5 rounded-lg bg-brand-red text-white font-semibold text-sm tracking-wide red-btn-glow uppercase">
+                        Download CV
+                    </a>
+                </div>
+
+                <!-- Social Icons Row -->
+                <div class="flex items-center justify-center md:justify-start gap-4 pt-4 text-gray-400 text-xl">
+                    <a href="#" class="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:text-brand-red hover:border-brand-red/50 transition">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:text-brand-red hover:border-brand-red/50 transition">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:text-brand-red hover:border-brand-red/50 transition">
+                        <i class="fa-brands fa-tiktok"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:text-brand-red hover:border-brand-red/50 transition">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Visual Component: Neon Avatar + Rotating Orbiting Skill Bubbles -->
+            <div class="flex-1 flex justify-center items-center">
+                <div class="orbit-container scale-90 sm:scale-100">
+                    
+                    <!-- Center Avatar Container with Golden Neon Glow -->
+                    <div class="relative w-44 h-44 rounded-full avatar-glow border-4 border-yellow-400 p-1 z-20 bg-black overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="Gustiawan Avatar" class="w-full h-full object-cover rounded-full">
+                    </div>
+
+                    <!-- Orbit Ring 1 (Clockwise) -->
+                    <div class="orbit-ring">
+                        <!-- JS Bubble -->
+                        <div class="tech-bubble text-yellow-400 font-bold text-xs" style="top: 0%; left: 50%; transform: translate(-50%, -50%);">
+                            JS
+                        </div>
+                        <!-- HTML5 Bubble -->
+                        <div class="tech-bubble text-orange-500 font-bold text-lg" style="top: 50%; left: 100%; transform: translate(-50%, -50%);">
+                            <i class="fa-brands fa-html5"></i>
+                        </div>
+                        <!-- CSS3 Bubble -->
+                        <div class="tech-bubble text-blue-500 font-bold text-lg" style="top: 100%; left: 50%; transform: translate(-50%, -50%);">
+                            <i class="fa-brands fa-css3-alt"></i>
+                        </div>
+                        <!-- React Bubble -->
+                        <div class="tech-bubble text-cyan-400 font-bold text-lg" style="top: 50%; left: 0%; transform: translate(-50%, -50%);">
+                            <i class="fa-brands fa-react"></i>
+                        </div>
+                    </div>
+
+                    <!-- Orbit Ring 2 (Counter Clockwise / Wider Angle) -->
+                    <div class="orbit-ring orbit-ring-reverse" style="width: 120%; height: 120%;">
+                        <!-- Python Bubble -->
+                        <div class="tech-bubble text-yellow-300 font-bold text-lg" style="top: 15%; left: 85%; transform: translate(-50%, -50%);">
+                            <i class="fa-brands fa-python"></i>
+                        </div>
+                        <!-- Node Bubble -->
+                        <div class="tech-bubble text-green-500 font-bold text-lg" style="top: 85%; left: 15%; transform: translate(-50%, -50%);">
+                            <i class="fa-brands fa-node-js"></i>
+                        </div>
+                        <!-- Git Bubble -->
+                        <div class="tech-bubble text-red-500 font-bold text-lg" style="top: 85%; left: 85%; transform: translate(-50%, -50%);">
+                            <i class="fa-brands fa-git-alt"></i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+        <section id="about" class="py-20 border-t border-white/5">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 tracking-tight">About Me</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                <!-- Text Description & Skills Tags -->
+                <div class="space-y-6">
+                    <p class="text-gray-300 leading-relaxed text-sm sm:text-base">
+                        I am a passionate Junior Web Developer dedicated to creating engaging and functional web experiences. With expertise in HTML, CSS, JavaScript, and modern frameworks, I am committed to delivering high-quality digital solutions.
+                    </p>
+                    <p class="text-gray-300 leading-relaxed text-sm sm:text-base">
+                        I believe technology should be accessible and add value to users. Every project I work on is an opportunity to learn and grow while contributing positively to the developer community.
+                    </p>
+
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4 text-white">Skills & Technologies</h3>
+                        <div class="flex flex-wrap gap-2.5">
+                            <span class="px-3 py-1.5 rounded-md bg-white/5 border border-white/10 text-xs font-medium text-brand-glowRed">HTML5</span>
+                            <span class="px-3 py-1.5 rounded-md bg-white/5 border border-white/10 text-xs font-medium text-brand-glowRed">CSS3</span>
+                            <span class="px-3 py-1.5 rounded-md bg-white/5 border border-white/10 text-xs font-medium text-brand-glowRed">JavaScript</span>
+                            <span class="px-3 py-1.5 rounded-md bg-white/5 border border-white/10 text-xs font-medium text-brand-glowRed">React</span>
+                            <span class="px-3 py-1.5 rounded-md bg-white/5 border border-white/10 text-xs font-medium text-brand-glowRed">Node.js</span>
+                            <span class="px-3 py-1.5 rounded-md bg-white/5 border border-white/10 text-xs font-medium text-brand-glowRed">Git</span>
+                            <span class="px-3 py-1.5 rounded-md bg-white/5 border border-white/10 text-xs font-medium text-brand-glowRed">Responsive Design</span>
+                            <span class="px-3 py-1.5 rounded-md bg-white/5 border border-white/10 text-xs font-medium text-brand-glowRed">UI/UX</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Styled JavaScript Code Card Block -->
+                <div class="glass-card rounded-xl p-6 font-mono text-sm shadow-2xl relative">
+                    <div class="flex items-center gap-2 mb-4 pb-3 border-b border-white/10">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        <span class="text-xs text-gray-500 ml-2">developer.js</span>
+                    </div>
+                    <pre class="text-gray-300 leading-relaxed overflow-x-auto">
+<span class="text-purple-400">const</span> <span class="text-yellow-300">developer</span> = {
+  <span class="text-red-400">name</span>: <span class="text-green-300">'Yudi setiawan'</span>,
+  <span class="text-red-400">role</span>: <span class="text-green-300">'Web Developer'</span>,
+  <span class="text-red-400">passion</span>: <span class="text-green-300">'Creating amazing web experiences'</span>
+};
+                    </pre>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="py-20 border-t border-white/5">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 tracking-tight">My Projects</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project Card 1 -->
+                <div class="glass-card rounded-xl overflow-hidden flex flex-col">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&w=600&q=80" alt="E-Commerce Platform" class="w-full h-full object-cover transition duration-500 hover:scale-105">
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-2">E-Commerce Platform</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                                A complete e-commerce platform with shopping cart, payment integration, and admin dashboard features.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-2.5 py-1 rounded bg-brand-red/20 text-brand-glowRed text-xs font-semibold">React</span>
+                                <span class="px-2.5 py-1 rounded bg-brand-red/20 text-brand-glowRed text-xs font-semibold">Node.js</span>
+                                <span class="px-2.5 py-1 rounded bg-brand-red/20 text-brand-glowRed text-xs font-semibold">MongoDB</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 pt-2">
+                            <a href="#" class="flex-1 text-center py-2 rounded bg-brand-red hover:bg-red-700 text-white text-xs font-semibold transition">Live Demo</a>
+                            <a href="#" class="flex-1 text-center py-2 rounded border border-white/20 hover:border-white text-white text-xs font-semibold transition">GitHub</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 2 -->
+                <div class="glass-card rounded-xl overflow-hidden flex flex-col">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" alt="Portfolio Website" class="w-full h-full object-cover transition duration-500 hover:scale-105">
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-2">Portfolio Website</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                                An interactive portfolio website with animations and responsive design to showcase work.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-2.5 py-1 rounded bg-brand-red/20 text-brand-glowRed text-xs font-semibold">HTML</span>
+                                <span class="px-2.5 py-1 rounded bg-brand-red/20 text-brand-glowRed text-xs font-semibold">CSS</span>
+                                <span class="px-2.5 py-1 rounded bg-brand-red/20 text-brand-glowRed text-xs font-semibold">JavaScript</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 pt-2">
+                            <a href="#" class="flex-1 text-center py-2 rounded bg-brand-red hover:bg-red-700 text-white text-xs font-semibold transition">Live Demo</a>
+                            <a href="#" class="flex-1 text-center py-2 rounded border border-white/20 hover:border-white text-white text-xs font-semibold transition">GitHub</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 3 -->
+                <div class="glass-card rounded-xl overflow-hidden flex flex-col">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80" alt="Task Management App" class="w-full h-full object-cover transition duration-500 hover:scale-105">
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-2">Task Management App</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                                A task management application with drag-and-drop and real-time collaboration features.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-2.5 py-1 rounded bg-brand-red/20 text-brand-glowRed text-xs font-semibold">Vue.js</span>
+                                <span class="px-2.5 py-1 rounded bg-brand-red/20 text-brand-glowRed text-xs font-semibold">Firebase</span>
+                                <span class="px-2.5 py-1 rounded bg-brand-red/20 text-brand-glowRed text-xs font-semibold">Tailwind CSS</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 pt-2">
+                            <a href="#" class="flex-1 text-center py-2 rounded bg-brand-red hover:bg-red-700 text-white text-xs font-semibold transition">Live Demo</a>
+                            <a href="#" class="flex-1 text-center py-2 rounded border border-white/20 hover:border-white text-white text-xs font-semibold transition">GitHub</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-20 border-t border-white/5">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12 tracking-tight">Get In Touch</h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                <!-- Left Side: Contact Information -->
+                <div class="space-y-6">
+                    <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
+                        Let's collaborate! I am always open to discussing exciting projects and new opportunities.
+                    </p>
+
+                    <div class="space-y-4 pt-2">
+                        <div class="flex items-center gap-4 text-gray-300">
+                            <div class="w-10 h-10 rounded-lg bg-brand-red/20 text-brand-glowRed flex items-center justify-center">
+                                <i class="fa-regular fa-envelope"></i>
+                            </div>
+                            <span class="text-sm">Yudi setiawandev@gmail.com</span>
+                        </div>
+
+                        <div class="flex items-center gap-4 text-gray-300">
+                            <div class="w-10 h-10 rounded-lg bg-brand-red/20 text-brand-glowRed flex items-center justify-center">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <span class="text-sm">+62 8217082972</span>
+                        </div>
+
+                        <div class="flex items-center gap-4 text-gray-300">
+                            <div class="w-10 h-10 rounded-lg bg-brand-red/20 text-brand-glowRed flex items-center justify-center">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <span class="text-sm">Bandar Sei Kijang, Riau Pelalawan</span>
+                        </div>
+                    </div>
+
+                    <!-- Social Icons -->
+                    <div class="flex gap-4 pt-4 text-gray-400">
+                        <a href="#" class="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:text-brand-red hover:border-brand-red/50 transition">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:text-brand-red hover:border-brand-red/50 transition">
+                            <i class="fa-brands fa-github"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:text-brand-red hover:border-brand-red/50 transition">
+                            <i class="fa-brands fa-tiktok"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:text-brand-red hover:border-brand-red/50 transition">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Side: Contact Form -->
+                <form id="contactForm" class="glass-card rounded-xl p-8 space-y-4">
+                    <div>
+                        <input type="text" placeholder="Your Name" required class="w-full px-4 py-3 rounded-lg bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-brand-red text-sm transition">
+                    </div>
+                    <div>
+                        <input type="email" placeholder="Your Email" required class="w-full px-4 py-3 rounded-lg bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-brand-red text-sm transition">
+                    </div>
+                    <div>
+                        <textarea placeholder="Your Message" rows="4" required class="w-full px-4 py-3 rounded-lg bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-brand-red text-sm transition resize-none"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full py-3.5 rounded-lg bg-brand-red text-white font-semibold text-xs tracking-wider uppercase red-btn-glow">
+                        SEND MESSAGE
+                    </button>
+                    
+                    <!-- Form Submission Feedback Box -->
+                    <div id="formStatus" class="hidden text-center text-xs text-green-400 mt-2">
+                        Message sent successfully!
+                    </div>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 py-8 text-center text-xs text-gray-500">
+        <p>&copy; 2026 Yudi setiawan-dev. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Typewriter Effect Data & Implementation
+        const roles = ['Front-End', 'Problem Solver', 'Web Developer'];
+        let roleIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typingSpeed = 100;
+        const deletingSpeed = 60;
+        const delayBetweenRoles = 1800;
+
+        const typewriterElement = document.getElementById('typewriterText');
+
+        function typeEffect() {
+            const currentRole = roles[roleIndex];
+
+            if (isDeleting) {
+                typewriterElement.textContent = currentRole.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typewriterElement.textContent = currentRole.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let nextSpeed = isDeleting ? deletingSpeed : typingSpeed;
+
+            if (!isDeleting && charIndex === currentRole.length) {
+                nextSpeed = delayBetweenRoles;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                roleIndex = (roleIndex + 1) % roles.length;
+                nextSpeed = 300;
+            }
+
+            setTimeout(typeEffect, nextSpeed);
+        }
+
+        // Mobile Menu Toggle Logic
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+            });
+        });
+
+        // Contact Form Handling (No alert, inline message box)
+        const contactForm = document.getElementById('contactForm');
+        const formStatus = document.getElementById('formStatus');
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            formStatus.classList.remove('hidden');
+            contactForm.reset();
+            setTimeout(() => {
+                formStatus.classList.add('hidden');
+            }, 4000);
+        });
+
+        // Start animation loop on page load
+        window.onload = function() {
+            typeEffect();
+        };
+    </script>
+</body>
+</html>
